@@ -1,0 +1,16 @@
+{
+  "general": {
+
+  },
+  "development": {
+    "sql": {
+      "type": "postgresql",
+      "database": "training",
+      "host": "192.168.210.84",
+      "port": "5432",
+      "username": "postrgres",
+      "password": "",
+      "debug": true
+    }
+  }
+}
