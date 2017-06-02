@@ -2,18 +2,27 @@ from flask import Flask
 from src.models.channel import Channel_Model
 
 
-def postChannels(session, channel_model):
+def insert_channel_from_db(session, channel_model):
+    """
+    Insert channel into database
+    :parameter: session, channel
+    :return: status
+    """
     print(channel_model.name)
     try:
-        print(channel_model.created_at)
+        print channel_model.created_at
         session.add(channel_model)
         session.commit()
-        # add prepared statment to opened session
         return True
     except:
         print('name')
         return False
 
 
-def getChannels(session):
+def find_channel_from_db(session):
+    """
+    Find channel from database
+    :parameter: session
+    :return: channel
+    """
     return session.query(Channel_Model).all()

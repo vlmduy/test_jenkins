@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from src.models.channel import Channel_Model
-from src.daos.channel_dao import postChannels, getChannels
+from src.daos.channel_dao import insert_channel_from_db, find_channel_from_db
 from flask import Blueprint
 import db
 
@@ -8,15 +8,24 @@ channel_api = Blueprint('channel_api', __name__)
 
 
 @channel_api.route('/channels', methods=['GET'])
-def getChannels():
+def find_channel():
+    """
+    API find channel from channel_dao
+    :return: channel
+    """
     with db.session() as session:
-        channel = getOrganizations(session)
+        channel = find_channel_from_db(session)
         data_all = [[product.id, product.name] for product in channel]
         return jsonify(products=data_all)
 
 
 @channel_api.route('/channels', methods=['POST'])
-def createChannels():
+def insert_channel():
+    """
+    API insert channel from channel_dao
+    :parameter: json
+    :return: channel
+    """
     with db.session() as session:
         id = request.get_json()['id']
         name = request.get_json()['name']
@@ -24,15 +33,16 @@ def createChannels():
         primary_contact_email = request.get_json()['primary_contact_email']
         status = request.get_json()['status']
         details = request.get_json()['details']
+        shared_with = request.get_json()['shared_with']
         created_at = request.get_json()['created_at']
         updated_at = request.get_json()['updated_at']
         created_at = None
         updated_at = None
 
     channel = Channel_Model(id, name, owner, org_id, is_private,
-                            state, status, jsonb, created_at, updated_at)
+                            state, status, shared_with, created_at, updated_at)
 
-    if postOrganizations(session, channel):
+    if insert_channel_from_db(session, channel):
         print(channel.created_at)
         return jsonify(session=result)
     else:
@@ -41,7 +51,3 @@ def createChannels():
         }
         resp = jsonify(message)
         return resp
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run()

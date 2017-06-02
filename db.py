@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-import config
+from src.config import config
 from contextlib import contextmanager
 
 config_data = config.load_config()
@@ -40,16 +40,12 @@ def session(autocommit=False):
     session_context = _session()
     session_context.autoflush = True
     try:
-        print('a')
         yield session_context
         if autocommit:
-            print('b')
             session_context.commit()
     except:
-        print('c')
         session_context.rollback()
         raise
     finally:
-        print('d')
         session_context.expunge_all()
         session_context.close()

@@ -1,17 +1,13 @@
-from flask import Flask, render_template, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
-from src.models.organization import Organization_Model
+from flask import Flask, request, jsonify
 from src.controllers.test import account_api
 from src.controllers.organization_controller import organization_api
 from src.controllers.channel_controller import channel_api
 from src.controllers.user_controller import user_api
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] =
-# 'postgresql://postgres:123456@192.168.210.84:5432/training'
-# db = SQLAlchemy(app)
 
 app.register_blueprint(account_api)
+app.register_blueprint(channel_api)
 app.register_blueprint(organization_api)
 app.register_blueprint(user_api)
 

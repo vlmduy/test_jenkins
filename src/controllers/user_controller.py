@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from src.models.user import User_Model
-from src.daos.user_dao import postUsers, getUsers
+from src.daos.user_dao import insert_user_from_db, find_user_from_db
 from flask import Blueprint
 import db
 
@@ -8,15 +8,24 @@ user_api = Blueprint('user_api', __name__)
 
 
 @user_api.route('/users', methods=['GET'])
-def getUser():
+def find_users():
+    """
+    API find user from user_dao
+    :return: user
+    """
     with db.session() as session:
-        user = getUsers(session)  # fetch all products on the table
+        user = find_user_from_db(session)  # fetch all products on the table
         data_all = [[product.id, product.email] for product in user]
         return jsonify(products=data_all)
 
 
 @user_api.route('/users', methods=['POST'])
-def postUser():
+def insert_users():
+    """
+    API insert user from user_dao
+    :parameter: json
+    :return: user
+    """
     with db.session() as session:
         # fetch pram from the request
         id = request.get_json()['id']
@@ -35,6 +44,7 @@ def postUser():
         password_salt = 'ddfsdsf'
 
         user = User_Model(id, email, first_name,
+                          last_login_at,
                           password_hash,
                           password_salt,
                           org_id,
@@ -45,12 +55,7 @@ def postUser():
                           created_at,
                           updated_at)
 
-        if postUsers(session, user):
-            # organization_id = organization.id #fetch last inserted id
-            # data = Organization_Model.query.
-            # filter_by(id=organization_id).first()
-            # etch our inserted product
-            # result = [data.name, data.id] #prepare visual data
+        if insert_user_from_db(session, user):
             return jsonify(session=result)
         else:
             message = {
@@ -58,7 +63,3 @@ def postUser():
             }
             resp = jsonify(message)
             return resp
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run()

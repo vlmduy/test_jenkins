@@ -12,7 +12,7 @@ class Channel_Model(Base):
     is_private = Column(Boolean, unique=True)
     state = Column(String(120), unique=True)
     status = Column(String(120), unique=True)
-    jsonb = Column(String(120), unique=True)
+    shared_with = Column(String(120), unique=True)
     created_at = Column(TIMESTAMP)
     updated_at = Column(TIMESTAMP)
 
@@ -24,7 +24,7 @@ class Channel_Model(Base):
                  is_private,
                  state,
                  status,
-                 jsonb,
+                 shared_with,
                  created_at,
                  updated_at):
         self.id = id
@@ -34,7 +34,7 @@ class Channel_Model(Base):
         self.is_private = is_private
         self.state = state
         self.status = status
-        self.jsonb = jsonb
+        self.shared_with = shared_with
         self.created_at = created_at
         self.updated_at = updated_at
 

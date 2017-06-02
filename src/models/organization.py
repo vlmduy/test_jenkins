@@ -2,7 +2,6 @@ from flask import Flask
 from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP
 from db import Base
 
-
 class Organization_Model(Base):
     __tablename__ = 'organizations'
     id = Column(String(120), primary_key=True)

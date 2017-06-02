@@ -8,7 +8,7 @@ except KeyError:
 
 
 def load_config():
-    with open('config.json') as data_file:
+    with open('src/config/config.json') as data_file:
         data = json.load(data_file)
     data['environemnt'] = env
     return data[env]
