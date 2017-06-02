@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
 from src.models.user import User_Model
 from src.daos.user_dao import postUsers, getUsers
 from flask import Blueprint

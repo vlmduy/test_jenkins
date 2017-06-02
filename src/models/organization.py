@@ -1,7 +1,5 @@
 from flask import Flask
 from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
 from db import Base
 
 class Organization_Model(Base):

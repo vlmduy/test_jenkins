@@ -1,5 +1,4 @@
-from flask import Flask, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask
 from src.models.channel import Channel_Model
 
 def postChannels(session, channel_model):

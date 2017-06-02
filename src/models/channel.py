@@ -1,9 +1,5 @@
 from flask import Flask
 from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP, ForeignKey
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
-from organization import Organization_Model
-from user import User_Model
 from db import Base
 
 class Channel_Model(Base):
@@ -18,9 +14,6 @@ class Channel_Model(Base):
     jsonb = Column(String(120), unique=True)
     created_at = Column(TIMESTAMP)
     updated_at = Column(TIMESTAMP)
-    organization = relationship('Organization_Model')
-    user = relationship('User_Model')
-
 
     def __init__(self, id, name, owner, org_id, is_private, state, status, jsonb, created_at, updated_at):
     	self.id = id

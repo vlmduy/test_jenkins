@@ -1,7 +1,5 @@
-from flask import Flask, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask
 from src.models.organization import Organization_Model
-from src.models.user import User_Model
 
 def postOrganizations(session, organization_model):
     print(organization_model.name)

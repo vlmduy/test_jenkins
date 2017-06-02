@@ -1,8 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, TIMESTAMP
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship
-from organization import Organization_Model
 from db import Base
 
 class User_Model(Base):
@@ -20,7 +17,6 @@ class User_Model(Base):
     last_login_at = Column(TIMESTAMP)
     created_at = Column(TIMESTAMP)
     updated_at = Column(TIMESTAMP)
-    organization = relationship('Organization_Model')
 
     def __init__(self, id, email, first_name, last_name, password_hash, password_salt, org_id, feature_access, access_token, should_reset_password, last_login_at, created_at, updated_at):
     	self.id = id

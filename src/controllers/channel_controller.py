@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
 from src.models.channel import Channel_Model
 from src.daos.channel_dao import postChannels, getChannels
 from flask import Blueprint
