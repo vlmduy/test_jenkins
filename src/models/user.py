@@ -2,6 +2,7 @@ from flask import Flask
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, TIMESTAMP
 from db import Base
 
+
 class User_Model(Base):
     __tablename__ = 'users'
     id = Column(String(120), primary_key=True)
@@ -18,8 +19,21 @@ class User_Model(Base):
     created_at = Column(TIMESTAMP)
     updated_at = Column(TIMESTAMP)
 
-    def __init__(self, id, email, first_name, last_name, password_hash, password_salt, org_id, feature_access, access_token, should_reset_password, last_login_at, created_at, updated_at):
-    	self.id = id
+    def __init__(self,
+                 id,
+                 email,
+                 first_name,
+                 last_name,
+                 password_hash,
+                 password_salt,
+                 org_id,
+                 feature_access,
+                 access_token,
+                 should_reset_password,
+                 last_login_at,
+                 created_at,
+                 updated_at):
+        self.id = id
         self.email = email
         self.first_name = first_name
         self.last_name = last_name

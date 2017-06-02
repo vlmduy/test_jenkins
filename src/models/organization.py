@@ -2,6 +2,7 @@ from flask import Flask
 from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP
 from db import Base
 
+
 class Organization_Model(Base):
     __tablename__ = 'organizations'
     id = Column(String(120), primary_key=True)
@@ -13,9 +14,16 @@ class Organization_Model(Base):
     created_at = Column(TIMESTAMP)
     updated_at = Column(TIMESTAMP)
 
-
-    def __init__(self, id, name, logo, details, primary_contact_email, status, created_at, updated_at):
-    	self.id = id
+    def __init__(self,
+                 id,
+                 name,
+                 logo,
+                 details,
+                 primary_contact_email,
+                 status,
+                 created_at,
+                 updated_at):
+        self.id = id
         self.name = name
         self.logo = logo
         self.details = details
@@ -24,5 +32,5 @@ class Organization_Model(Base):
         self.created_at = created_at
         self.updated_at = updated_at
 
-        def __repr__(self):
-            return '<Name %r>' % self.name
+    def __repr__(self):
+        return '<Name %r>' % self.name

@@ -1,6 +1,7 @@
 from flask import Flask
-from sqlalchemy import Column, Integer, String, Boolean, Date, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, ForeignKey
 from db import Base
+
 
 class Channel_Model(Base):
     __tablename__ = 'channels'
@@ -15,8 +16,18 @@ class Channel_Model(Base):
     created_at = Column(TIMESTAMP)
     updated_at = Column(TIMESTAMP)
 
-    def __init__(self, id, name, owner, org_id, is_private, state, status, jsonb, created_at, updated_at):
-    	self.id = id
+    def __init__(self,
+                 id,
+                 name,
+                 owner,
+                 org_id,
+                 is_private,
+                 state,
+                 status,
+                 jsonb,
+                 created_at,
+                 updated_at):
+        self.id = id
         self.name = name
         self.owner = owner
         self.org_id = org_id
@@ -27,5 +38,5 @@ class Channel_Model(Base):
         self.created_at = created_at
         self.updated_at = updated_at
 
-        def __repr__(self):
-            return '<Name %r>' % self.name
+    def __repr__(self):
+        return '<Name %r>' % self.name

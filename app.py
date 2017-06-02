@@ -7,16 +7,19 @@ from src.controllers.channel_controller import channel_api
 from src.controllers.user_controller import user_api
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@192.168.210.84:5432/training'
+# app.config['SQLALCHEMY_DATABASE_URI'] =
+# 'postgresql://postgres:123456@192.168.210.84:5432/training'
 # db = SQLAlchemy(app)
 
 app.register_blueprint(account_api)
 app.register_blueprint(organization_api)
 app.register_blueprint(user_api)
 
+
 @app.route('/')
 def index():
     return 'Hello World!'
+
 
 @app.errorhandler(404)
 def not_found(error=None):
@@ -28,6 +31,7 @@ def not_found(error=None):
     resp.status_code = 404
 
     return resp
+
 
 @app.errorhandler(500)
 def error_handler(error=None):
