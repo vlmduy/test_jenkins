@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
 from src.models.organization import Organization_Model
 from src.daos.organization_dao import postOrganizations, getOrganizations
 from flask import Blueprint
