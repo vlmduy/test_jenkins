@@ -1,17 +1,21 @@
-from flask import Flask
+"""
+src/models/user.py: User Mapping Object
+Copyright 2017-2018 LinhHo Training.
+"""
+
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, TIMESTAMP
 from db import Base
 
 
 class User_Model(Base):
     __tablename__ = 'users'
-    id = Column(String(120), primary_key=True)
+    id = Column(Integer, primary_key=True)
     email = Column(String(120), unique=True)
     first_name = Column(String(120), unique=True)
     last_name = Column(String(120), unique=True)
     password_hash = Column(String(120), unique=True)
     password_salt = Column(String(120), unique=True)
-    org_id = Column(Integer, ForeignKey('organization.id'), nullable=False)
+    org_id = Column(Integer, ForeignKey('organizations.id'), nullable=False)
     feature_access = Column(String(120), unique=True)
     access_token = Column(String(120), unique=True)
     should_reset_password = Column(Boolean, unique=True)

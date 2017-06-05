@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+"""
+src/controllers/organization_controller.py: Organization Controller
+Copyright 2017-2018 LinhHo Training.
+"""
+
+from flask import request, jsonify, Blueprint
 from src.models.organization import Organization_Model
-from src.daos.organization_dao import insert_organization_to_db, find_organization_from_db
-from flask import Blueprint
+from src.daos.organization_dao import insert_organization_to_db, \
+        find_organization_from_db
 import db
 
 organization_api = Blueprint('organization_api', __name__)
@@ -38,16 +43,13 @@ def insert_organization():
         created_at = None
         updated_at = None
 
-        organization = Organization_Model(id, name, logo,
-                                          primary_contact_email, status,
-                                          details, created_at, updated_at)
-
-        if insert_organization_to_db(session, organization):
-            print(organization.created_at)
-            return jsonify(session=organization)
-        else:
-            message = {
-                  'message': 'fail',
-            }
-            resp = jsonify(message)
-            return resp
+        organization = Organization_Model(id,
+                                          name,
+                                          logo,
+                                          primary_contact_email,
+                                          status,
+                                          details,
+                                          created_at,
+                                          updated_at)
+        result = insert_organization_to_db(session, organization)
+        return jsonify(result)

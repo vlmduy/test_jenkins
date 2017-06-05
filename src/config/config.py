@@ -1,3 +1,8 @@
+"""
+src/config/config.py: config
+Copyright 2017-2018 LinhHo Training.
+"""
+
 import json
 import os
 

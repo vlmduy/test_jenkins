@@ -1,14 +1,18 @@
-from flask import Flask
+"""
+src/models/channel.py: Channel Mapping Object
+Copyright 2017-2018 LinhHo Training.
+"""
+
 from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, ForeignKey
 from db import Base
 
 
 class Channel_Model(Base):
     __tablename__ = 'channels'
-    id = Column(String(120), primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(120), unique=True)
-    owner = Column(Integer, ForeignKey('user.id'), nullable=False)
-    org_id = Column(Integer, ForeignKey('organization.id'), nullable=False)
+    owner = Column(Integer, ForeignKey('users.id'), nullable=False)
+    org_id = Column(Integer, ForeignKey('organizations.id'), nullable=False)
     is_private = Column(Boolean, unique=True)
     state = Column(String(120), unique=True)
     status = Column(String(120), unique=True)

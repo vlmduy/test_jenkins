@@ -1,7 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+"""
+src/controllers/user_controller.py: User Controller
+Copyright 2017-2018 LinhHo Training.
+"""
+
+from flask import Blueprint, request, jsonify
 from src.models.user import User_Model
 from src.daos.user_dao import insert_user_from_db, find_user_from_db
-from flask import Blueprint
 import db
 
 user_api = Blueprint('user_api', __name__)
@@ -40,11 +44,13 @@ def insert_users():
         last_login_at = request.get_json()['last_login_at']
         created_at = None
         updated_at = None
-        password_hash = 'dsdf'
+        password_hash = password
         password_salt = 'ddfsdsf'
 
-        user = User_Model(id, email, first_name,
-                          last_login_at,
+        user = User_Model(id,
+                          email,
+                          first_name,
+                          last_name,
                           password_hash,
                           password_salt,
                           org_id,
@@ -55,11 +61,5 @@ def insert_users():
                           created_at,
                           updated_at)
 
-        if insert_user_from_db(session, user):
-            return jsonify(session=result)
-        else:
-            message = {
-                  'message': 'fail',
-            }
-            resp = jsonify(message)
-            return resp
+        result = insert_user_from_db(session, user)
+        return jsonify(result)

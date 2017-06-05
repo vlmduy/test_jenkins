@@ -1,7 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+"""
+src/controllers/channel_controller.py: Channel Controller
+Copyright 2017-2018 LinhHo Training.
+"""
+
+from flask import request, jsonify, Blueprint
 from src.models.channel import Channel_Model
 from src.daos.channel_dao import insert_channel_from_db, find_channel_from_db
-from flask import Blueprint
 import db
 
 channel_api = Blueprint('channel_api', __name__)
@@ -42,13 +46,5 @@ def insert_channel():
 
     channel = Channel_Model(id, name, owner, org_id, is_private,
                             state, status, shared_with, created_at, updated_at)
-
-    if insert_channel_from_db(session, channel):
-        print(channel.created_at)
-        return jsonify(session=result)
-    else:
-        message = {
-              'message': 'fail',
-        }
-        resp = jsonify(message)
-        return resp
+    message = insert_channel_from_db(session, channel)
+    return jsonify(message)
