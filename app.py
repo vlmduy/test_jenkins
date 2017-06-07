@@ -7,6 +7,8 @@ from flask import Flask, request, jsonify
 from src.controllers.organization_controller import organization_api
 from src.controllers.channel_controller import channel_api
 from src.controllers.user_controller import user_api
+from src.config.init_authentication import authDB
+
 
 app = Flask(__name__)
 
@@ -14,8 +16,8 @@ app.register_blueprint(channel_api)
 app.register_blueprint(organization_api)
 app.register_blueprint(user_api)
 
-
 @app.route('/')
+@authDB.requires_auth
 def index():
     """
     API test

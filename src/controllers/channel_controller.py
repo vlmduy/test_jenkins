@@ -7,11 +7,13 @@ from flask import request, jsonify, Blueprint
 from src.models.channel import Channel_Model
 from src.daos.channel_dao import insert_channel_from_db, find_channel_from_db
 import db
+from src.config.init_authentication import authDB
 
 channel_api = Blueprint('channel_api', __name__)
 
 
 @channel_api.route('/channels', methods=['GET'])
+@authDB.requires_auth
 def find_channel():
     """
     API find channel from channel_dao
@@ -24,6 +26,7 @@ def find_channel():
 
 
 @channel_api.route('/channels', methods=['POST'])
+@authDB.requires_auth
 def insert_channel():
     """
     API insert channel from channel_dao
