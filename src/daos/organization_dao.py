@@ -28,7 +28,7 @@ def insert_organization_to_db(session, organization_model):
         except Exception as ex:
             print "Error on add organization %s. Exception: %s", organization_model, ex
             session.rollback()
-            rresult['message'] = 'added new organization success'
+            result['message'] = 'added new organization success'
             result['status'] = 'ok'
     else:
         try:

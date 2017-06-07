@@ -6,25 +6,38 @@ Copyright 2017-2018 LinhHo Training.
 from flask import request, jsonify, Blueprint
 from src.models.organization import Organization_Model
 from src.daos.organization_dao import insert_organization_to_db, \
-        find_organization_from_db
+        find_organization_from_db, get_organization_by_id
 import db
 
 organization_api = Blueprint('organization_api', __name__)
 
 
-@organization_api.route('/organizations', methods=['GET'])
+@organization_api.route('/organization', methods=['GET'])
 def find_organization():
     """
     API find organization from organization_dao
-    :return: organization
+    :return: organizations
     """
     with db.session() as session:
-        data = find_organization_from_db(session)
-        data_all = [[product.id, product.name] for product in data]
-        return jsonify(products=data_all)
+        organization_data = find_organization_from_db(session)
+        data_all = [product.serialize() for product in organization_data]
+        return jsonify(data=data_all)
 
 
-@organization_api.route('/organizations', methods=['POST'])
+@organization_api.route('/organization/id/<organization_id>', methods=['GET'])
+def find_organization_by_id(organization_id):
+    """
+    API find organization by organization_id from organization_dao
+    :return: organization
+    """
+    print organization_id
+    with db.session() as session:
+        organization_data = get_organization_by_id(organization_id, session)
+        result = organization_data.serialize()
+        return jsonify(data=result)
+
+
+@organization_api.route('/organization', methods=['POST'])
 def insert_organization():
     """
     API insert organization from organization_dao

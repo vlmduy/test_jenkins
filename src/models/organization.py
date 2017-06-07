@@ -36,5 +36,16 @@ class Organization_Model(Base):
         self.created_at = created_at
         self.updated_at = updated_at
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'primary_contact_email': self.primary_contact_email,
+            'status': self.status,
+            'details': self.details,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
     def __repr__(self):
         return '<Name %r>' % self.name

@@ -42,5 +42,19 @@ class Channel_Model(Base):
         self.created_at = created_at
         self.updated_at = updated_at
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'owner': self.owner,
+            'org_id': self.org_id,
+            'is_private': self.is_private,
+            'state': self.state,
+            'status': self.status,
+            'shared_with': self.shared_with,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
     def __repr__(self):
         return '<Name %r>' % self.name

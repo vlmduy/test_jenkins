@@ -51,5 +51,20 @@ class User_Model(Base):
         self.created_at = created_at
         self.updated_at = updated_at
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'org_id': self.org_id,
+            'feature_access': self.feature_access,
+            'access_token': self.access_token,
+            'should_reset_password': self.should_reset_password,
+            'last_login_at': self.last_login_at,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
     def __repr__(self):
         return '<E-mail %r>' % self.email

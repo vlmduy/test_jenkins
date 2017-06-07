@@ -5,25 +5,37 @@ Copyright 2017-2018 LinhHo Training.
 
 from flask import Blueprint, request, jsonify
 from src.models.user import User_Model
-from src.daos.user_dao import insert_user_from_db, find_user_from_db
+from src.daos.user_dao import insert_user_from_db, find_user_from_db, get_user_by_id
 import db
 
 user_api = Blueprint('user_api', __name__)
 
 
-@user_api.route('/users', methods=['GET'])
+@user_api.route('/user', methods=['GET'])
 def find_users():
     """
     API find user from user_dao
+    :return: users
+    """
+    with db.session() as session:
+        user_data = find_user_from_db(session)  # fetch all products on the table
+        data_all = [user.serialize() for user in user_data]
+        return jsonify(data=data_all)
+
+
+@user_api.route('/user/id/<user_id>', methods=['GET'])
+def find_user_by_id(user_id):
+    """
+    API find user by user_id from user_dao
     :return: user
     """
     with db.session() as session:
-        user = find_user_from_db(session)  # fetch all products on the table
-        data_all = [[product.id, product.email] for product in user]
-        return jsonify(products=data_all)
+        user_data = get_user_by_id(user_id, session)  # fetch all products on the table
+        user = user_data.serialize()
+        return jsonify(data=user)
 
 
-@user_api.route('/users', methods=['POST'])
+@user_api.route('/user', methods=['POST'])
 def insert_users():
     """
     API insert user from user_dao

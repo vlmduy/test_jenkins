@@ -19,7 +19,7 @@ CREATE TABLE users (
 	password_hash varchar(128),
 	password_salt varchar(128),
 	org_id integer references organizations(id),
-	feature_access jsonb,
+	feature_access text,
 	access_token text,
 	should_reset_password boolean,
 	last_login_at timestamp with time zone,
@@ -36,7 +36,7 @@ CREATE TABLE channels (
 	is_private boolean,
 	state text,
 	status text,
-	shared_with jsonb,
+	shared_with text,
 	created_at timestamp with time zone,
 	updated_at timestamp with time zone
 );
