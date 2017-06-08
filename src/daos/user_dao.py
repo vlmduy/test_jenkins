@@ -72,3 +72,23 @@ def get_user_by_id(user_id, session):
     except NoResultFound as ex:
         print "No result found User.get_user_by_id %s", ex
         return None
+
+
+def get_user_by_email(session, email):
+    result = None
+    try:
+        query = session.query(User_Model).filter(User_Model.email == email)
+        result = query.first()
+    except Exception as ex:
+        print ex
+    return result
+
+
+def check_user_login(session, email, password):
+    result = None
+    try:
+        query = session.query(User_Model).filter(User_Model.email == email, User_Model.password_salt == password)
+        result = query.first()
+    except Exception as ex:
+        print ex
+    return result
