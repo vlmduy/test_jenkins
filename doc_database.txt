@@ -1,0 +1,42 @@
+CREATE SEQUENCE organization_id_seq;
+CREATE TABLE organizations (
+	id integer PRIMARY KEY DEFAULT nextval('organization_id_seq'),
+	name varchar(100),
+	logo bytea,
+	primary_contact_email varchar(255),
+	status boolean,
+	details varchar,
+	created_at timestamp with time zone,
+	updated_at timestamp with time zone
+);
+
+CREATE SEQUENCE user_id_seq;
+CREATE TABLE users (
+	id integer PRIMARY KEY DEFAULT nextval('user_id_seq'),
+	email varchar(50),
+	first_name varchar(50),
+	last_name varchar(50),
+	password_hash varchar(128),
+	password_salt varchar(128),
+	org_id integer references organizations(id),
+	feature_access text,
+	access_token text,
+	should_reset_password boolean,
+	last_login_at timestamp with time zone,
+	created_at timestamp with time zone,
+	updated_at timestamp with time zone
+);
+
+CREATE SEQUENCE channel_id_seq;
+CREATE TABLE channels (
+	id integer PRIMARY KEY DEFAULT nextval('channel_id_seq') ,
+	name varchar(50),
+	owner integer references users(id),
+	org_id integer references organizations(id),
+	is_private boolean,
+	state text,
+	status text,
+	shared_with text,
+	created_at timestamp with time zone,
+	updated_at timestamp with time zone
+);
