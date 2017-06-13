@@ -4,17 +4,13 @@ Copyright 2017-2018 LinhHo Training.
 """
 
 from flask import request, jsonify, Blueprint, abort
-from flask_cors import CORS, cross_origin
 from src.models.channel import Channel_Model
 from src.daos.channel_dao import insert_channel_from_db, \
         find_channel_from_db, get_channel_by_id, remove_channel_by_id, \
         edit_channel_by_id
 import db
 
-
-
 channel_api = Blueprint('channel_api', __name__)
-CORS(channel_api)
 
 
 @channel_api.route('/channel', methods=['GET'])
@@ -55,11 +51,11 @@ def insert_channel():
             id = None
             name = request.get_json(silent=True)['name']
             owner = request.get_json(silent=True)['owner']
-            org_id = request.get_json(silent=True)['orgId']
-            is_private = request.get_json(silent=True)['isPrivate']
+            org_id = request.get_json(silent=True)['org_id']
+            is_private = request.get_json(silent=True)['is_private']
             state = request.get_json(silent=True)['state']
             status = request.get_json(silent=True)['status']
-            shared_with = request.get_json(silent=True)['sharedWith']
+            shared_with = request.get_json(silent=True)['shared_with']
             created_at = None
             updated_at = None
         except Exception as ex:
@@ -76,8 +72,7 @@ def insert_channel():
             return jsonify(_channel.serialize())
 
 
-@channel_api.route('/channel/id/<channel_id>', methods=['DELETE', 'OPTIONS'])
-@cross_origin()
+@channel_api.route('/channel/<channel_id>', methods=['DELETE'])
 def remove_channel(channel_id):
     """
     API remove channel by channel_id from channel_dao
@@ -88,7 +83,7 @@ def remove_channel(channel_id):
         return jsonify(message)
 
 
-@channel_api.route('/channel/id/<channel_id>', methods=['PUT'])
+@channel_api.route('/channel/<channel_id>', methods=['PUT'])
 def edit_channel(channel_id):
     """
     API edit channel from channel_dao
@@ -102,11 +97,11 @@ def edit_channel(channel_id):
             id = channel_id
             name = request.get_json(silent=True)['name']
             owner = request.get_json(silent=True)['owner']
-            org_id = request.get_json(silent=True)['orgId']
-            is_private = request.get_json(silent=True)['isPrivate']
+            org_id = request.get_json(silent=True)['org_id']
+            is_private = request.get_json(silent=True)['is_private']
             state = request.get_json(silent=True)['state']
             status = request.get_json(silent=True)['status']
-            shared_with = request.get_json(silent=True)['sharedWith']
+            shared_with = request.get_json(silent=True)['shared_with']
             created_at = None
             updated_at = None
         except Exception as ex:
@@ -120,7 +115,8 @@ def edit_channel(channel_id):
         if _message['status'] == 'error':
             return error_handler(_message['message'])
         else:
-            return jsonify(_message)
+            _result = _message['channel']
+            return jsonify(_result.serialize())
 
 
 @channel_api.errorhandler(500)

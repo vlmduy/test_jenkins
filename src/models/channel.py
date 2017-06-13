@@ -44,7 +44,7 @@ class Channel_Model(Base):
 
     def serialize(self):
         return {
-            'id': self.id,
+            'id': int(self.id),
             'name': self.name,
             'owner': self.owner,
             'org_id': self.org_id,

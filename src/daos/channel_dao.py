@@ -4,6 +4,7 @@ Copyright 2017-2018 LinhHo Training.
 """
 
 from datetime import datetime
+import pytz
 from src.models.channel import Channel_Model
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
@@ -23,7 +24,7 @@ def insert_channel_from_db(session, channel_model):
     _channel = get_channel_by_name(channel_name=channel_model.name, session=session)
     if _channel is None:
         try:
-            channel_model.created_at = datetime.utcnow()
+            channel_model.created_at = datetime.utcnow().replace(tzinfo=pytz.UTC)
             session.add(channel_model)
             session.commit()
             result['message'] = 'added new Channel success'
@@ -48,6 +49,7 @@ def edit_channel_by_id(session, channel_model):
     # Check if channel already exist in database
     result = {
         'message': 'ok',
+        'channel': None,
         'status': 'ok'
     }
     _channel = get_channel_by_id(channel_id=channel_model.id, session=session)
@@ -57,12 +59,14 @@ def edit_channel_by_id(session, channel_model):
     else:
         try:
             channel_model.created_at = _channel.created_at
-            channel_model.updated_at = datetime.utcnow()
+            channel_model.updated_at = datetime.utcnow().replace(tzinfo=pytz.UTC)
             session.merge(channel_model)
             session.commit()
             result['message'] = 'edited channel success'
             result['status'] = 'ok'
+            result['channel'] = channel_model
         except Exception as ex:
+            print ex
             session.rollback()
             result['message'] = 'edited channel fail'
             result['status'] = 'error'
