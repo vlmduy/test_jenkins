@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 from src.controllers.organization_controller import organization_api
 from src.controllers.channel_controller import channel_api
 from src.controllers.user_controller import user_api
+from src.controllers.login_controller import login_api
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -15,6 +16,7 @@ CORS(app)
 app.register_blueprint(channel_api)
 app.register_blueprint(organization_api)
 app.register_blueprint(user_api)
+app.register_blueprint(login_api)
 
 
 @app.route('/')

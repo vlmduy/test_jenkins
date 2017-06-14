@@ -17,9 +17,9 @@ def insert_channel_from_db(session, channel_model):
     """
     # Check if channel already exist in database
     result = {
-        'channel': None,
+        'data': None,
         'message': 'ok',
-        'status': 'ok'
+        'status': True
     }
     _channel = get_channel_by_name(channel_name=channel_model.name, session=session)
     if _channel is None:
@@ -28,15 +28,17 @@ def insert_channel_from_db(session, channel_model):
             session.add(channel_model)
             session.commit()
             result['message'] = 'added new Channel success'
-            result['status'] = 'ok'
-            result['channel'] = channel_model
-        except Exception as ex:
+            result['status'] = True
+            result['data'] = channel_model.serialize()
+        except Exception:
             session.rollback()
             result['message'] = 'added new Channel fail'
-            result['status'] = 'error'
+            result['status'] = False
+            del result['data']
     else:
         result['message'] = 'Channel already exists'
-        result['status'] = 'error'
+        result['status'] = False
+        del result['data']
     return result
 
 
@@ -49,13 +51,13 @@ def edit_channel_by_id(session, channel_model):
     # Check if channel already exist in database
     result = {
         'message': 'ok',
-        'channel': None,
-        'status': 'ok'
+        'data': None,
+        'status': False
     }
     _channel = get_channel_by_id(channel_id=channel_model.id, session=session)
     if _channel is None:
         result['message'] = 'channel does not exist'
-        result['status'] = 'error'
+        del result['data']
     else:
         try:
             channel_model.created_at = _channel.created_at
@@ -63,13 +65,13 @@ def edit_channel_by_id(session, channel_model):
             session.merge(channel_model)
             session.commit()
             result['message'] = 'edited channel success'
-            result['status'] = 'ok'
-            result['channel'] = channel_model
+            result['status'] = True
+            result['data'] = channel_model.serialize()
         except Exception as ex:
             print ex
             session.rollback()
             result['message'] = 'edited channel fail'
-            result['status'] = 'error'
+            del result['data']
     return result
 
 
@@ -94,7 +96,7 @@ def remove_channel_by_id(session, channel_id):
             session.commit()
             result['message'] = 'removed channel success'
             result['status'] = 'ok'
-        except Exception as ex:
+        except Exception:
             session.rollback()
             result['message'] = 'removed channel fail'
             result['status'] = 'fail'
@@ -107,7 +109,23 @@ def find_channel_from_db(session):
     :parameter: session
     :return: channel
     """
-    return session.query(Channel_Model).all()
+    result = {
+        'message': 'ok',
+        'status': True,
+        'data': None
+    }
+    try:
+        data = session.query(Channel_Model).all()
+        _data = []
+        for channel in data:
+            _data.append(channel.serialize())
+        result['data'] = _data
+        del result['message']
+    except Exception as ex:
+        result['status'] = False
+        result['message'] = ex
+        del result['data']
+    return result
 
 
 def get_channel_by_id(channel_id, session):

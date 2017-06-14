@@ -8,6 +8,8 @@ from src.models.channel import Channel_Model
 from src.daos.channel_dao import insert_channel_from_db, \
         find_channel_from_db, get_channel_by_id, remove_channel_by_id, \
         edit_channel_by_id
+from src.daos.login_dao import verify_token
+from src.controllers.handler_error import error_handler, not_loggin
 import db
 
 channel_api = Blueprint('channel_api', __name__)
@@ -19,10 +21,17 @@ def find_all_channel():
     API find channel from channel_dao
     :return: channels
     """
+    _token = request.headers.get('token')
+    try:
+        verify_token(_token)
+    except Exception as ex:
+        print ex
+        return not_loggin()
+
     with db.session() as session:
-        channel = find_channel_from_db(session)
-        data_all = [product.serialize() for product in channel]
-        return jsonify(data=data_all)
+        result = find_channel_from_db(session)
+        # data_all = [product.serialize() for product in channel]
+        return jsonify(result)
 
 
 @channel_api.route('/channel/id/<channel_id>', methods=['GET'])
@@ -31,10 +40,16 @@ def find_channel_by_id(channel_id):
     API find channel by channel_id from channel_dao
     :return: channel
     """
+    _token = request.headers.get('token')
+    try:
+        verify_token(_token)
+    except Exception:
+        return not_loggin()
+
     with db.session() as session:
         channel = get_channel_by_id(channel_id, session)
         result = channel.serialize()
-        return jsonify(data=result)
+        return jsonify(result)
 
 
 @channel_api.route('/channel', methods=['POST'])
@@ -44,6 +59,13 @@ def insert_channel():
     :parameter: json
     :return: channel
     """
+    _token = request.headers.get('token')
+    try:
+        verify_token(_token)
+    except Exception:
+        return not_loggin()
+
+
     if not request.json:
         abort(400)
     else:
@@ -64,12 +86,8 @@ def insert_channel():
     channel = Channel_Model(id, name, owner, org_id, is_private,
                             state, status, shared_with, created_at, updated_at)
     with db.session() as session:
-        _message = insert_channel_from_db(session, channel)
-        if _message['status'] == 'error':
-            return error_handler(_message['message'])
-        else:
-            _channel = _message['channel']
-            return jsonify(_channel.serialize())
+        _result = insert_channel_from_db(session, channel)
+        return jsonify(_result)
 
 
 @channel_api.route('/channel/<channel_id>', methods=['DELETE'])
@@ -78,6 +96,12 @@ def remove_channel(channel_id):
     API remove channel by channel_id from channel_dao
     :return: channel
     """
+    _token = request.headers.get('token')
+    try:
+        verify_token(_token)
+    except Exception:
+        return not_loggin()
+
     with db.session() as session:
         message = remove_channel_by_id(session, channel_id)
         return jsonify(message)
@@ -90,6 +114,12 @@ def edit_channel(channel_id):
     :parameter: json
     :return: channel
     """
+    _token = request.headers.get('token')
+    try:
+        verify_token(_token)
+    except Exception:
+        return not_loggin()
+
     if not request.json:
         abort(400)
     else:
@@ -108,29 +138,8 @@ def edit_channel(channel_id):
             return error_handler(ex)
 
     _channel = Channel_Model(id, name, owner, org_id, is_private,
-                            state, status, shared_with, created_at, updated_at)
+                             state, status, shared_with, created_at, updated_at)
 
     with db.session() as session:
-        _message = edit_channel_by_id(session, _channel)
-        if _message['status'] == 'error':
-            return error_handler(_message['message'])
-        else:
-            _result = _message['channel']
-            return jsonify(_result.serialize())
-
-
-@channel_api.errorhandler(500)
-def error_handler(error):
-    """
-    Handler error 500
-    :return: Request Error url
-    """
-    _error = str(error)
-    message = {
-        'status': 500,
-        'message': _error
-    }
-    resp = jsonify(message)
-    resp.status_code = 500
-
-    return resp
+        _result = edit_channel_by_id(session, _channel)
+        return jsonify(_result)

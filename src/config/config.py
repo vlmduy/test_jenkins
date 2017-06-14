@@ -11,6 +11,7 @@ try:
 except KeyError:
     env = 'development'
 
+SECRET_KEY = 'qwertyuiop'
 
 def load_config():
     with open('src/config/config.json') as data_file:
