@@ -28,9 +28,7 @@ app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
 
-
-
-print 'ssdsdsaasdad'
+print 'test Jenkins'
 
 @app.route('/')
 def index():

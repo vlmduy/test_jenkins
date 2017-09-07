@@ -14,17 +14,17 @@ import db
 organization_api = Blueprint('organization_api', __name__)
 
 
-@organization_api.route('/organization', methods=['GET'])
+@organization_api.route('/organization/', methods=['GET'])
 def find_organization():
     """
     API find organization from organization_dao
     :return: organizations
     """
-    _token = request.headers.get('token')
-    try:
-        verify_token(_token)
-    except Exception:
-        return not_loggin()
+    # _token = request.headers.get('token')
+    # try:
+    #     verify_token(_token)
+    # except Exception:
+    #     return not_loggin()
 
     with db.session() as session:
         organization_data = find_organization_from_db(session)

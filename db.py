@@ -13,10 +13,11 @@ config_data = config.load_config()
 sql_config = config_data['sql']
 url = '{}://{}:{}@{}:{}/{}'
 
-url = url.format(sql_config['type'], sql_config['username'],
-                 sql_config['password'], sql_config['host'],
-                 sql_config['port'], sql_config['database'])
-url = "postgresql+psycopg2://postgres:123456@192.168.210.84:5432/training"
+# url = url.format(sql_config['type'], sql_config['username'],
+#                  sql_config['password'], sql_config['host'],
+#                  sql_config['port'], sql_config['database'])
+# url = "postgresql+psycopg2://postgres:123456@192.168.210.84:5432/training"
+url = 'mysql+pymysql://root:Innovatube731442@35.187.101.71:3306/linh_clone'
 engine = create_engine(url)
 # engine = None
 

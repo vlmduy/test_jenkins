@@ -1,6 +1,7 @@
 *.py[cod]
 .pylintrc
-env
+evn/
+lib/
 .git
 .idea
 __pycache__
