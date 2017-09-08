@@ -1,0 +1,7 @@
+*.py[cod]
+.pylintrc
+evn/
+lib/
+.git
+.idea
+__pycache__
