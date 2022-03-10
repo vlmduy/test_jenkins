@@ -1,5 +1,5 @@
 Flask==0.12.2
-SQLAlchemy==1.1.10
+SQLAlchemy==1.3.0
 Psycopg2==2.7
 Werkzeug==0.9.4
 itsdangerous==0.23
